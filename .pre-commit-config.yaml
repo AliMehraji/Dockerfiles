@@ -53,4 +53,4 @@ repos:
         language: system
         types: ["dockerfile"]
         entry: hadolint
-        files: (Dockerfile.*|.*/Dockerfile)
+        files: (Dockerfile.*|.*.Dockerfile|.*/Dockerfile|.*/.*.Dockerfile)

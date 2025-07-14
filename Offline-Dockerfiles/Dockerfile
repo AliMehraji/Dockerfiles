@@ -20,15 +20,17 @@ RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     ca-certificates \
     gnupg \
     curl \
-    && { apt-get clean || rm -rf /var/lib/apt/lists/*; }
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 FROM base AS build
 
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     apt-get update && apt-get install -y --no-install-recommends \
-    build-essential && \
-    rm { apt-get clean || rm -rf /var/lib/apt/lists/*; }
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
