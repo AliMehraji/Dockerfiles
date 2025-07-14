@@ -37,9 +37,9 @@ EOF
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    gnupg \
-    curl \
+      ca-certificates \
+      gnupg \
+      curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +48,7 @@ FROM base AS build
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+      build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -59,8 +59,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --timeout 100 --no-cache-dir --upgrade pip \
-    && pip install --timeout 100 --no-cache-dir -r requirements.txt
+    pip install --timeout 100 --no-cache-dir --upgrade pip && \
+    pip install --timeout 100 --no-cache-dir -r requirements.txt
 
 FROM base AS runtime
 

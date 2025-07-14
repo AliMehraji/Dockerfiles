@@ -13,13 +13,13 @@ ENV PYTHONUNBUFFERED=1 \
 
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
-    sed -i -e "s,deb.debian.org,${JFROG}/artifactory/debian,g" /etc/apt/sources.list.d/debian.sources && \
-    sed -i -e "s,^Signed-By:.*,Trusted: yes,g" /etc/apt/sources.list.d/debian.sources && \
-    echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/trusted-apt.conf && \
-    apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    gnupg \
-    curl \
+    sed -i -e "s,deb.debian.org,${JFROG}/artifactory/debian,g" /etc/apt/sources.list.d/debian.sources \
+    && sed -i -e "s,^Signed-By:.*,Trusted: yes,g" /etc/apt/sources.list.d/debian.sources \
+    && echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/trusted-apt.conf \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates \
+      gnupg \
+      curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -28,7 +28,7 @@ FROM base AS build
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+      build-essential \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
