@@ -16,20 +16,22 @@ RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     sed -i -e "s,http:\/\/deb.debian.org,https:\/\/${JFROG}/artifactory/debian,g" /etc/apt/sources.list.d/debian.sources \
     && sed -i -e "s,^Signed-By:.*,Trusted: yes,g" /etc/apt/sources.list.d/debian.sources \
     && echo 'Acquire::https::Verify-Peer "false";' > /etc/apt/apt.conf.d/trusted-apt.conf \
-    && apt-get update && apt-get install -y --no-install-recommends \
+    && apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
       ca-certificates \
       gnupg \
       curl \
     && apt-get clean \
+    && apt-get remove --purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 
 FROM base AS build
 
 # securely copy .netrc using BuildKit secrets
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
-    apt-get update && apt-get install -y --no-install-recommends \
+    apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
       build-essential \
     && apt-get clean \
+    && apt-get remove --purge --auto-remove -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
