@@ -11,6 +11,7 @@ ARG JFROG=jfrog.example.com
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_TIMEOUT=100 \
     PIP_INDEX_URL=https://${JFROG}/artifactory/api/pypi/python/simple/
 
 # Using DEB822 format (.sources files) - for newer systems
@@ -61,8 +62,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --timeout 100 --no-cache-dir --upgrade pip && \
-    pip install --timeout 100 --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 FROM base AS runtime
 

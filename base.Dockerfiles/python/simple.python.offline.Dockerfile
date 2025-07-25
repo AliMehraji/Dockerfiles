@@ -7,6 +7,7 @@ ARG JFROG
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_TIMEOUT=60 \
     PIP_INDEX_URL=https://${JFROG}/artifactory/api/pypi/python/simple/
 
 RUN sed -i -e "s,http:\/\/deb.debian.org,https:\/\/${JFROG}/artifactory/debian,g" /etc/apt/sources.list.d/debian.sources \
